@@ -1,0 +1,9 @@
+-r common.txt
+
+autopep8
+black
+flake8
+ipdb
+ipython
+jedi
+yapf
