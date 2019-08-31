@@ -6,11 +6,10 @@ services:
     image: postgres
 
   web:
-    image: arecker/portal:latest
+    image: arecker/hub:latest
     build: .
     environment:
-      DJANGO_SETTINGS_MODULE: portal.settings.prod
+      DJANGO_SETTINGS_MODULE: hub.settings.prod
     ports: ["8000:8000"]
     depends_on: ["db"]
-    command: |
-      python manage.py migrate
+    command: entry.sh web

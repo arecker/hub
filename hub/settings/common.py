@@ -27,7 +27,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'portal.urls'
+ROOT_URLCONF = 'hub.urls'
 
 TEMPLATES = [
     {
@@ -45,7 +45,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'portal.wsgi.application'
+WSGI_APPLICATION = 'hub.wsgi.application'
 
 LANGUAGE_CODE = 'en-us'
 

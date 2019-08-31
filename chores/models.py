@@ -12,8 +12,9 @@ class Chore(models.Model):
     name = models.CharField(max_length=80)
     description = models.TextField(blank=True, max_length=300)
     assignee = models.ForeignKey(User, on_delete=models.CASCADE)
+    last_completed = models.DateTimeField(auto_now_add=True, editable=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
