@@ -1,3 +1,4 @@
+import calendar
 import uuid
 
 from django.db import models
@@ -14,3 +15,20 @@ class Chore(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        abstract = True
+
+
+class WeeklyChore(Chore):
+    day_of_the_week = models.PositiveSmallIntegerField(
+        verbose_name='Day of the Week',
+        choices=[(i, calendar.day_name[i]) for i in range(7)]
+    )
+
+
+class MonthlyChore(Chore):
+    day_of_the_month = models.PositiveSmallIntegerField(
+        verbose_name='Day of the Month',
+        choices=[(i, i) for i in range(1, 29)]
+    )
