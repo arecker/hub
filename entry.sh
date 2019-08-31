@@ -15,7 +15,7 @@ case "$1" in
     "web")
 	migrate
 	log "launching web server"
-	 0.0.0.0:8000
+	gunicorn -b 0.0.0.0:8000 hub.wsgi
 	;;
     "*")
 	log "unknown command: $1"

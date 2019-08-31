@@ -9,12 +9,13 @@ WORKDIR /home/app
 ADD requirements/*.txt requirements/
 RUN pip install -r requirements/prod.txt
 
+# Set up environment
+USER app
+ENV PS1 "\u@\h:\w\$ "
+RUN rm -rf .bashrc .profile .bash_logout
+
 # Move code over
 ADD . .
-RUN chown -R app:app .
-
-# Drop permissions
-USER app
 
 # Default
-CMD ["/usr/local/bin/env", "bash"]
+CMD ["bash"]
