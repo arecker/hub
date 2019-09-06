@@ -10,6 +10,8 @@ from hub.settings.common import (
     STATIC_URL
 )
 
+os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
+
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 SECRET_KEY = 'blessed-be-the-fruit'
