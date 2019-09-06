@@ -12,7 +12,6 @@ class Chore(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
 
     name = models.CharField(max_length=80)
-    description = models.TextField(blank=True, max_length=300)
     assignee = models.ForeignKey(User, on_delete=models.CASCADE)
     last_completed = models.DateField(auto_now_add=True, editable=False)
     next_due = models.DateField(null=True, editable=False)
@@ -36,7 +35,7 @@ class WeeklyChore(Chore):
         choices=[(i, calendar.day_name[i]) for i in range(7)]
     )
 
-    def find_next_due_date(self, now=None):
+    def find_next_due_date(self, now):
         days_ahead = self.day_of_the_week - now.weekday()
         if days_ahead <= 0:
             days_ahead += 7
@@ -49,7 +48,7 @@ class MonthlyChore(Chore):
         choices=[(i, i) for i in range(1, 29)]
     )
 
-    def find_next_due_date(self, now=None):
+    def find_next_due_date(self, now):
         if now.day > self.day_of_the_month:
             now_month, now_year = now.month, now.year
 

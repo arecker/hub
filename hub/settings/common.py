@@ -1,3 +1,5 @@
+# flake8: noqa
+
 import os
 
 BASE_DIR = os.path.abspath(
@@ -13,8 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'chores'
+    'db'
 ]
 
 MIDDLEWARE = [
