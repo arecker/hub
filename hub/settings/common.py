@@ -9,7 +9,6 @@ BASE_DIR = os.path.abspath(
 )
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -34,7 +33,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -59,3 +58,8 @@ USE_L10N = True
 USE_TZ = False
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'db.User'
+
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'

@@ -2,13 +2,7 @@
 
 import os
 
-from hub.settings.common import (
-    BASE_DIR, INSTALLED_APPS, MIDDLEWARE,
-    ROOT_URLCONF, TEMPLATES, WSGI_APPLICATION,
-    LANGUAGE_CODE, TIME_ZONE,
-    USE_I18N, USE_L10N, USE_TZ,
-    STATIC_URL
-)
+from hub.settings.common import *
 
 os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
 
@@ -22,3 +16,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'tmp/db.sqlite3')
     }
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'tmp/email')
