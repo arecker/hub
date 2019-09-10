@@ -1,12 +1,6 @@
 # flake8: noqa
 
-from hub.settings.common import (
-    BASE_DIR, INSTALLED_APPS, MIDDLEWARE,
-    ROOT_URLCONF, TEMPLATES, WSGI_APPLICATION,
-    LANGUAGE_CODE, TIME_ZONE,
-    USE_I18N, USE_L10N, USE_TZ,
-    STATIC_URL, AUTH_USER_MODEL
-)
+from hub.settings.common import *
 
 DEBUG = False
 SECRET_KEY = 'TODO-MAKE-BETTER'
