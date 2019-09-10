@@ -41,6 +41,9 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     last_login   = models.DateTimeField(blank=True, null=True, editable=True)
     date_joined  = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.get_short_name()
     
     @property
     def is_active(self):
@@ -49,6 +52,9 @@ class User(AbstractBaseUser):
     def get_short_name(self):
         name, _ = self.email.split('@')
         return name.capitalize()
+
+    def get_full_name(self):
+        return self.get_short_name()
 
 
 class Chore(models.Model):
