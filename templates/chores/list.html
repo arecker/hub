@@ -1,24 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="btn-group m-2" role="group" aria-label="Basic example">
-  <a href="{% url 'chore-create' %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">New</a>
+<div class="row">
+  <div class="col-md-8">
+    <div class="btn-group m-2" role="group" aria-label="Basic example">
+      <a href="{% url 'chore-create' %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">New</a>
+    </div>
+    <table class="table m-2">
+      <thead>
+	<tr>
+	  <th scope="col">Action</th>
+	  <th scope="col">Name</th>
+	  <th scope="col">Assignee</th>
+	  <th scope="col">Next Due Date</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for chore in chore_list %}
+	<tr>
+	  <td>
+	    <div class="dropdown">
+	      <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		Action
+	      </button>
+	      <div class="dropdown-menu" aria-labelledby="dLabel">
+		<a class="dropdown-item" href="{% url 'chore-complete' pk=chore.pk %}">Complete</a>
+		<a class="dropdown-item" href="{% url 'chore-update' pk=chore.pk %}">Edit</a>
+		<a class="dropdown-item" href="{% url 'chore-delete' pk=chore.pk %}">Delete</a>
+	      </div>
+	    </div>
+	  </td>
+	  <td>{{ chore.name }}</td>
+	  <td>{{ chore.assignee }}</td>
+	  <td>{{ chore.next_due_date | date:'l, F j Y' }}</td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>    
+  </div>
 </div>
-<table class="table m-2">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Assignee</th>
-      <th scope="col">Next Due Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for chore in chore_list %}
-    <tr>
-      <td>{{ chore.name }}</td>
-      <td>{{ chore.assignee }}</td>
-      <td>{{ chore.next_due_date | date }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
 {% endblock %}

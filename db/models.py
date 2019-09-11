@@ -1,5 +1,6 @@
 # flake8: noqa
 
+import datetime
 import uuid
 
 from django.db import models
@@ -68,3 +69,11 @@ class Chore(models.Model):
 
     def __str__(self):
         return self.name
+
+    def find_next_due_date(self):
+        if self.cadence == 0:
+            return self.next_due_date + timezone.timedelta(days=7)
+        elif self.cadence == 1:
+            pass
+        else:
+            return ValueError(f'unexpected cadence type {self.cadence}')
