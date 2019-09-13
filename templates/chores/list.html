@@ -2,8 +2,39 @@
 {% block content %}
 <div class="row">
   <div class="col-md-8">
-    <div class="btn-group m-2" role="group" aria-label="Basic example">
-      <a href="{% url 'chore-create' %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">New</a>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group m-2" role="group">
+	<a href="{% url 'chore-create' %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">New</a>
+      </div>
+      <div class="btn-group m-2" role="group">
+	<a class="btn btn-secondary {% if date_filter == 'today' %}active{% endif %}"
+	   href="{% url 'chore-list' %}?date_filter={{ 'today' | urlencode }}&assignee_filter={{ assignee_filter | urlencode }}"
+	   role="button">
+	  Today
+	</a>
+	<a class="btn btn-secondary {% if date_filter == 'three-days' %}active{% endif %}" 
+	   href="{% url 'chore-list' %}?date_filter={{ 'three-days' | urlencode }}&assignee_filter={{ assignee_filter | urlencode }}" 
+	   role="button">
+	  Next 3 Days
+	</a>
+	<a class="btn btn-secondary {% if date_filter == 'everything' %}active{% endif %}" 
+	   href="{% url 'chore-list' %}?date_filter={{ 'everything' | urlencode }}&assignee_filter={{ assignee_filter | urlencode }}" 
+	   role="button">
+	  All Time
+	</a>
+      </div>
+      <div class="btn-group m-2" role="group">
+	<a class="btn btn-secondary {% if assignee_filter == 'mine' %}active{% endif %}"
+	   href="{% url 'chore-list' %}?date_filter={{ date_filter | urlencode }}&assignee_filter={{ 'mine' | urlencode }}"
+	   role="button">
+	  Mine
+	</a>
+	<a class="btn btn-secondary {% if assignee_filter == 'everyones' %}active{% endif %}"
+	   href="{% url 'chore-list' %}?date_filter={{ date_filter | urlencode }}&assignee_filter={{ 'everyones' | urlencode }}"
+	   role="button">
+	  Everyone's
+	</a>
+      </div>
     </div>
     <table class="table m-2">
       <thead>
@@ -29,9 +60,11 @@
 	      </div>
 	    </div>
 	  </td>
-	  <td>{{ chore.name }}</td>
-	  <td>{{ chore.assignee }}</td>
-	  <td>{{ chore.next_due_date | date:'l, F j Y' }}</td>
+	  <td class="{% if chore.is_overdue %}text-danger{% endif %}">{{ chore.name }}</td>
+	  <td class="{% if chore.is_overdue %}text-danger{% endif %}">{{ chore.assignee }}</td>
+	  <td class="{% if chore.is_overdue %}text-danger{% endif %}">
+	    {{ chore.next_due_date | date:'l, F j Y' }}
+	  </td>
 	</tr>
 	{% endfor %}
       </tbody>

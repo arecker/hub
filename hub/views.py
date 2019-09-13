@@ -17,6 +17,28 @@ class ChoreList(ListView):
     model = Chore
     template_name = 'chores/list.html'
 
+    def get_queryset(self):
+        qs = super(ChoreList, self).get_queryset()
+
+        date_filter = self.request.GET.get('date_filter', 'today')
+        assignee_filter = self.request.GET.get('assignee_filter', 'mine')
+
+        if date_filter == 'today':
+            qs = qs.due_today()
+        elif date_filter == 'three-days':
+            qs = qs.due_next_three_days()
+
+        if assignee_filter == 'mine':
+            qs = qs.filter(assignee=self.request.user)
+
+        return qs.order_by('next_due_date')
+
+    def get_context_data(self, **kwargs):
+        context = super(ChoreList, self).get_context_data(**kwargs)
+        context['date_filter'] = self.request.GET.get('date_filter', 'today')
+        context['assignee_filter'] = self.request.GET.get('assignee_filter', 'mine')
+        return context
+
 
 class ChoreCreate(CreateView):
     model = Chore

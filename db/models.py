@@ -58,8 +58,20 @@ class User(AbstractBaseUser):
         return self.get_short_name()
 
 
+class ChoreQuerySet(models.QuerySet):
+    def due_today(self):
+        today = timezone.now().date()
+        return self.filter(next_due_date__lte=today)
+
+    def due_next_three_days(self):
+        next_three_days = timezone.now().date() + timezone.timedelta(days=3)
+        return self.filter(next_due_date__lte=next_three_days)
+
+
 class Chore(models.Model):
     ordering = ['-next_due_date']
+
+    objects = ChoreQuerySet.as_manager()
 
     id            = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     name          = models.CharField(max_length=80)
@@ -69,6 +81,11 @@ class Chore(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def is_overdue(self):
+        today = timezone.now().date()
+        return self.next_due_date < today
 
     def find_next_due_date(self):
         if self.cadence == 0:
