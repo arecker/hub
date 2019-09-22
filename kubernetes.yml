@@ -1,0 +1,137 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: hub-db-pv-volume
+  labels:
+    type: local
+    app: hub
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: hub-db-pv-claim
+  labels:
+    app: hub
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hub-db
+  labels:
+    app: hub
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hub
+        service: hub-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:11.5
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: hub
+            - name: POSTGRES_USER_FILE
+              value: /run/secrets/hub-db/hub-db-username.txt
+            - name: POSTGRES_PASSWORD_FILE
+              value: /run/secrets/hub-db/hub-db-password.txt
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: hub-db-data
+            - mountPath: /run/secrets/hub-db/
+              name: hub-db-secrets
+              readOnly: true
+      volumes:
+        - name: hub-db-data
+          persistentVolumeClaim:
+            claimName: hub-db-pv-claim
+        - name: hub-db-secrets
+          secret:
+            secretName: hub-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-db
+  labels:
+    app: hub
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+  selector:
+    service: hub-db
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hub-web
+  labels:
+    app: hub
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hub
+        service: hub-web
+    spec:
+      containers:
+        - name: web
+          image: arecker/hub:latest
+          command: ["./entry.sh"]
+          args: ["web"]
+          imagePullPolicy: Never
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: hub.settings.prod
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /run/secrets/hub-db/
+              name: hub-db-secrets
+              readOnly: true
+            - mountPath: /run/secrets/hub-web/
+              name: hub-web-secrets
+              readOnly: true
+      volumes:
+        - name: hub-db-secrets
+          secret:
+            secretName: hub-db
+        - name: hub-web-secrets
+          secret:
+            secretName: hub-web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-web
+  labels:
+    app: hub
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+  selector:
+    service: hub-web

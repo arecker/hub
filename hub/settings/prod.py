@@ -1,13 +1,27 @@
 # flake8: noqa
 
+import os
+
 from hub.settings.common import *
 
+def read_secret(secret_name, file_name):
+    target = os.path.join('/run/secrets/', secret_name, file_name)
+    with open(target) as f:
+        return f.read()
+
+
 DEBUG = False
-SECRET_KEY = 'TODO-MAKE-BETTER'
-ALLOWED_HOSTS = []
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
-]
+SECRET_KEY = read_secret('hub-web', 'hub-web-secret-key.txt')
+ALLOWED_HOSTS = ['hub.local']
+AUTH_PASSWORD_VALIDATORS = []
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hub',
+        'USER': read_secret('hub-db', 'hub-db-username.txt'),
+        'PASSWORD': read_secret('hub-db', 'hub-db-password.txt'),
+        'HOST': 'hub-db.default.svc.cluster.local',
+        'PORT': '5432',
+    }
+}

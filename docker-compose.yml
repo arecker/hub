@@ -1,15 +1,10 @@
 version: '3'
 
 services:
-
-  db:
-    image: postgres
-
   web:
     image: arecker/hub:latest
     build: .
     environment:
       DJANGO_SETTINGS_MODULE: hub.settings.prod
     ports: ["8000:8000"]
-    depends_on: ["db"]
     command: entry.sh web
