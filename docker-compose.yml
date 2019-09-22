@@ -8,3 +8,8 @@ services:
       DJANGO_SETTINGS_MODULE: hub.settings.prod
     ports: ["8000:8000"]
     command: entry.sh web
+  proxy:
+    image: arecker/hub-proxy:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.proxy

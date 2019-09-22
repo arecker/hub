@@ -135,3 +135,42 @@ spec:
     protocol: TCP
   selector:
     service: hub-web
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hub-proxy
+  labels:
+    app: hub
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hub
+        service: hub-proxy
+    spec:
+      containers:
+        - name: proxy
+          image: arecker/hub-proxy:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub
+  labels:
+    app: hub
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    protocol: TCP
+    name: https
+  selector:
+    service: hub-proxy
