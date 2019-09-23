@@ -46,7 +46,7 @@ spec:
       containers:
         - name: postgres
           image: postgres:11.5
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
           env:
@@ -102,7 +102,7 @@ spec:
           image: arecker/hub:latest
           command: ["./entry.sh"]
           args: ["web"]
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           env:
             - name: DJANGO_SETTINGS_MODULE
               value: hub.settings.prod
@@ -152,8 +152,13 @@ spec:
     spec:
       containers:
         - name: proxy
-          image: arecker/hub-proxy:latest
-          imagePullPolicy: Never
+          image: arecker/proxy:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: UPSTREAM_DNS
+              value: hub-web.default.svc.cluster.local
+            - name: UPSTREAM_HOSTNAME
+              value: hub.local
           ports:
             - containerPort: 80
             - containerPort: 443
@@ -165,12 +170,10 @@ metadata:
   labels:
     app: hub
 spec:
+  type: NodePort
   ports:
-  - port: 80
-    protocol: TCP
-    name: http
-  - port: 443
-    protocol: TCP
-    name: https
+   - port: 80
+     targetPort: 80
+     nodePort: 30000
   selector:
-    service: hub-proxy
+   service: hub-proxy
