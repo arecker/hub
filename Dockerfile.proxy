@@ -1,3 +1,0 @@
-FROM nginx
-MAINTAINER Alex Recker <alex@reckerfamily.com>
-COPY configs/nginx.conf /etc/nginx/conf.d/default.conf
