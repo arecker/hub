@@ -21,22 +21,18 @@ class ChoreList(ListView):
         qs = super(ChoreList, self).get_queryset()
 
         date_filter = self.request.GET.get('date_filter', 'today')
-        assignee_filter = self.request.GET.get('assignee_filter', 'mine')
 
         if date_filter == 'today':
             qs = qs.due_today()
         elif date_filter == 'three-days':
             qs = qs.due_next_three_days()
 
-        if assignee_filter == 'mine':
-            qs = qs.filter(assignee=self.request.user)
-
         return qs.order_by('next_due_date')
 
     def get_context_data(self, **kwargs):
         context = super(ChoreList, self).get_context_data(**kwargs)
         context['date_filter'] = self.request.GET.get('date_filter', 'today')
-        context['assignee_filter'] = self.request.GET.get('assignee_filter', 'mine')
+        context['active'] = 'chores'
         return context
 
 
@@ -46,6 +42,11 @@ class ChoreCreate(CreateView):
     form_class = ChoreForm
     success_url = reverse_lazy('chore-list')
 
+    def get_context_data(self, **kwargs):
+        context = super(ChoreCreate, self).get_context_data(**kwargs)
+        context['active'] = 'chores'
+        return context
+
 
 class ChoreUpdate(UpdateView):
     model = Chore
@@ -53,16 +54,29 @@ class ChoreUpdate(UpdateView):
     form_class = ChoreForm
     success_url = reverse_lazy('chore-list')
 
+    def get_context_data(self, **kwargs):
+        context = super(ChoreUpdate, self).get_context_data(**kwargs)
+        context['active'] = 'chores'
+        return context
+
 
 class ChoreDelete(DeleteView):
     model = Chore
     template_name = 'chores/delete.html'
     success_url = reverse_lazy('chore-list')
 
+    def get_context_data(self, **kwargs):
+        context = super(ChoreDelete, self).get_context_data(**kwargs)
+        context['active'] = 'chores'
+        return context
+
 
 class ChoreComplete(View):
     def get(self, request, pk):
-        context = {'chore': get_object_or_404(Chore, pk=pk)}
+        context = {
+            'chore': get_object_or_404(Chore, pk=pk),
+            'active': 'chores'
+        }
         return render(request, 'chores/complete.html', context)
 
     def post(self, request, pk):
