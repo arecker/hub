@@ -4,7 +4,7 @@
   <div class="col-md-8">
     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
       <div class="btn-group m-2" role="group">
-	<a href="{% url 'chore-create' %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">New</a>
+	<a href="{% url 'chore-create' %}?date_filter={{ date_filter | urlencode }}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">New</a>
       </div>
       <div class="btn-group m-2" role="group">
 	<a class="btn btn-secondary {% if date_filter == 'today' %}active{% endif %}"
@@ -43,9 +43,9 @@
 		  Action
 		</button>
 		<div class="dropdown-menu" aria-labelledby="dLabel">
-		  <a class="dropdown-item" href="{% url 'chore-complete' pk=chore.pk %}">Complete</a>
-		  <a class="dropdown-item" href="{% url 'chore-update' pk=chore.pk %}">Edit</a>
-		  <a class="dropdown-item" href="{% url 'chore-delete' pk=chore.pk %}">Delete</a>
+		  <a class="dropdown-item" href="{% url 'chore-complete' pk=chore.pk %}?date_filter={{ date_filter | urlencode }}">Complete</a>
+		  <a class="dropdown-item" href="{% url 'chore-update' pk=chore.pk %}?date_filter={{ date_filter | urlencode }}">Edit</a>
+		  <a class="dropdown-item" href="{% url 'chore-delete' pk=chore.pk %}?date_filter={{ date_filter | urlencode }}">Delete</a>
 		</div>
 	      </div>
 	    </td>

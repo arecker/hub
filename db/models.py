@@ -5,6 +5,7 @@ import uuid
 
 from django.db import models
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 
 class ChoreQuerySet(models.QuerySet):
@@ -44,6 +45,6 @@ class Chore(models.Model):
         if self.cadence == 0:
             return self.next_due_date + timezone.timedelta(days=7)
         elif self.cadence == 1:
-            pass
+            return self.next_due_date + relativedelta(months=+1)
         else:
             return ValueError(f'unexpected cadence type {self.cadence}')

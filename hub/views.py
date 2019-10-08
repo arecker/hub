@@ -40,7 +40,10 @@ class ChoreCreate(CreateView):
     model = Chore
     template_name = 'chores/form.html'
     form_class = ChoreForm
-    success_url = reverse_lazy('chore-list')
+
+    def get_success_url(self, **kwargs):
+        url = reverse_lazy('chore-list') + f'?{self.request.GET.urlencode()}'
+        return url
 
     def get_context_data(self, **kwargs):
         context = super(ChoreCreate, self).get_context_data(**kwargs)
@@ -52,7 +55,10 @@ class ChoreUpdate(UpdateView):
     model = Chore
     template_name = 'chores/form.html'
     form_class = ChoreForm
-    success_url = reverse_lazy('chore-list')
+
+    def get_success_url(self, **kwargs):
+        url = reverse_lazy('chore-list') + f'?{self.request.GET.urlencode()}'
+        return url
 
     def get_context_data(self, **kwargs):
         context = super(ChoreUpdate, self).get_context_data(**kwargs)
@@ -63,7 +69,10 @@ class ChoreUpdate(UpdateView):
 class ChoreDelete(DeleteView):
     model = Chore
     template_name = 'chores/delete.html'
-    success_url = reverse_lazy('chore-list')
+
+    def get_success_url(self, **kwargs):
+        url = reverse_lazy('chore-list') + f'?{self.request.GET.urlencode()}'
+        return url
 
     def get_context_data(self, **kwargs):
         context = super(ChoreDelete, self).get_context_data(**kwargs)
@@ -76,4 +85,5 @@ class ChoreComplete(View):
         chore = get_object_or_404(Chore, pk=pk)
         chore.next_due_date = chore.find_next_due_date()
         chore.save()
-        return redirect('chore-list')
+        url = reverse_lazy('chore-list') + f'?{request.GET.urlencode()}'
+        return redirect(url)
