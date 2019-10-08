@@ -73,13 +73,6 @@ class ChoreDelete(DeleteView):
 
 class ChoreComplete(View):
     def get(self, request, pk):
-        context = {
-            'chore': get_object_or_404(Chore, pk=pk),
-            'active': 'chores'
-        }
-        return render(request, 'chores/complete.html', context)
-
-    def post(self, request, pk):
         chore = get_object_or_404(Chore, pk=pk)
         chore.next_due_date = chore.find_next_due_date()
         chore.save()

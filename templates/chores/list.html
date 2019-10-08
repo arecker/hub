@@ -30,6 +30,7 @@
 	  <tr>
 	    <th scope="col">Action</th>
 	    <th scope="col">Name</th>
+	    <th scope="col">Assignee</th>
 	    <th scope="col">Next Due Date</th>
 	  </tr>
 	</thead>
@@ -49,6 +50,7 @@
 	      </div>
 	    </td>
 	    <td class="{% if chore.is_overdue %}text-danger{% endif %}">{{ chore.name }}</td>
+	    <td class="{% if chore.is_overdue %}text-danger{% endif %}">{{ chore.get_assignee_display }}</td>
 	    <td class="{% if chore.is_overdue %}text-danger{% endif %}">
 	      {{ chore.next_due_date | date:'l, F j Y' }}
 	    </td>

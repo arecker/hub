@@ -11,7 +11,7 @@ class DateInput(forms.DateInput):
 class ChoreForm(ModelForm):
     class Meta:
         model = Chore
-        fields = ['name', 'cadence', 'next_due_date']
+        fields = ['name', 'assignee', 'cadence', 'next_due_date']
         widgets = {
             'next_due_date': DateInput(),
         }
