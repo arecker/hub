@@ -104,7 +104,7 @@ metadata:
   labels:
     app: hub
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -157,7 +157,7 @@ metadata:
   labels:
     app: hub
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
