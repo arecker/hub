@@ -4,5 +4,6 @@
   {% csrf_token %}
   <p>Are you sure you want to delete "{{ object }}"?</p>
   <button type="submit" class="btn btn-danger">Delete</button>
+  <a class="btn btn-secondary" href="{% url 'chore-list' %}" role="button">Go Back</a>
 </form>
 {% endblock %}

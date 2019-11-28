@@ -8,6 +8,8 @@
       The Hub
       {% if active == 'chores' %}
       | Chores
+      {% elif active == 'contact' %}
+      | Contacts
       {% endif %}
     </title>
   </head>
@@ -21,6 +23,15 @@
 	<ul class="navbar-nav w-100">
 	  <li class="nav-item {% if active == 'chores' %}active{% endif %}">
             <a class="nav-link" href="{% url 'chore-list' %}">Chores</a>
+	  </li>
+	  <li class="nav-item dropdown {% if active == 'contacts' %}active{% endif %}">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Contacts
+            </a>
+	    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Contacts</a>
+              <a class="dropdown-item" href="{% url 'campaign-list' %}">Mailing Lists</a>
+            </div>
 	  </li>
 	</ul>  
       </div>
