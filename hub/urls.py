@@ -10,9 +10,5 @@ urlpatterns = [
     path('chores/complete/<uuid:pk>/', views.ChoreComplete.as_view(), name='chore-complete'),
     path('chores/update/<uuid:pk>/', views.ChoreUpdate.as_view(), name='chore-update'),
     path('chores/delete/<uuid:pk>/', views.ChoreDelete.as_view(), name='chore-delete'),
-    path('campaigns/', views.CampaignList.as_view(), name='campaign-list'),
-    path('campaigns/create', views.CampaignCreate.as_view(), name='campaign-create'),
-    path('campaigns/update/<uuid:pk>/', views.CampaignUpdate.as_view(), name='campaign-update'),
-    path('campaigns/delete/<uuid:pk>/', views.CampaignDelete.as_view(), name='campaign-delete'),
     path('', views.Index.as_view(), name='index')
 ]

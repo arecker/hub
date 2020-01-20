@@ -5,7 +5,7 @@ from django.views.generic import (
     UpdateView, DeleteView, View
 )
 
-from db.models import Chore, Contact, Campaign
+from db.models import Chore
 from hub.forms import ChoreForm
 
 
@@ -38,7 +38,7 @@ class ChoreList(ListView):
 
 class ChoreCreate(CreateView):
     model = Chore
-    template_name = 'generic/form.html'
+    template_name = 'chores/form.html'
     form_class = ChoreForm
 
     def get_success_url(self, **kwargs):
@@ -53,7 +53,7 @@ class ChoreCreate(CreateView):
 
 class ChoreUpdate(UpdateView):
     model = Chore
-    template_name = 'chores/generic.html'
+    template_name = 'chores/form.html'
     form_class = ChoreForm
 
     def get_success_url(self, **kwargs):
@@ -68,7 +68,7 @@ class ChoreUpdate(UpdateView):
 
 class ChoreDelete(DeleteView):
     model = Chore
-    template_name = 'generic/delete.html'
+    template_name = 'chores/delete.html'
 
     def get_success_url(self, **kwargs):
         url = reverse_lazy('chore-list') + f'?{self.request.GET.urlencode()}'
@@ -87,47 +87,3 @@ class ChoreComplete(View):
         chore.save()
         url = reverse_lazy('chore-list') + f'?{request.GET.urlencode()}'
         return redirect(url)
-
-
-class CampaignList(ListView):
-    model = Campaign
-    template_name = 'campaigns/list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CampaignList, self).get_context_data(**kwargs)
-        context['active'] = 'contacts'
-        return context
-
-
-class CampaignCreate(CreateView):
-    model = Campaign
-    fields = ['name']
-    template_name = 'generic/form.html'
-    success_url = reverse_lazy('campaign-list')
-
-    def get_context_data(self, **kwargs):
-        context = super(CampaignCreate, self).get_context_data(**kwargs)
-        context['active'] = 'contacts'
-        return context
-
-
-class CampaignUpdate(UpdateView):
-    model = Campaign
-    fields = ['name']
-    template_name = 'generic/form.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CampaignUpdate, self).get_context_data(**kwargs)
-        context['active'] = 'contacts'
-        return context
-
-
-class CampaignDelete(DeleteView):
-    model = Campaign
-    template_name = 'generic/delete.html'
-    success_url = reverse_lazy('campaign-list')
-
-    def get_context_data(self, **kwargs):
-        context = super(CampaignDelete, self).get_context_data(**kwargs)
-        context['active'] = 'contacts'
-        return context

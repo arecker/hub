@@ -48,22 +48,3 @@ class Chore(models.Model):
             return self.next_due_date + relativedelta(months=+1)
         else:
             return ValueError(f'unexpected cadence type {self.cadence}')
-
-
-class Campaign(models.Model):
-    id      = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    name    = models.CharField(max_length=120)
-
-    def __str__(self):
-        return self.name
-
-
-class Contact(models.Model):
-
-    id            = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    name          = models.CharField(max_length=120)
-    address       = models.TextField(blank=True)
-    mailing_lists = models.ManyToManyField(Campaign)
-
-    def __str__(self):
-        return self.name
