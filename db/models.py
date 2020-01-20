@@ -1,5 +1,6 @@
 # flake8: noqa
 
+import copy
 import datetime
 import uuid
 
@@ -42,9 +43,15 @@ class Chore(models.Model):
         return self.next_due_date < today
 
     def find_next_due_date(self):
-        if self.cadence == 0:
-            return self.next_due_date + timezone.timedelta(days=7)
-        elif self.cadence == 1:
-            return self.next_due_date + relativedelta(months=+1)
-        else:
-            return ValueError(f'unexpected cadence type {self.cadence}')
+        today = timezone.now().date()
+        next_due = copy.copy(self.next_due_date)
+
+        while not (next_due > today):
+            if self.cadence == 0:
+                next_due += timezone.timedelta(days=7)
+            elif self.cadence == 1:
+                next_due += relativedelta(months=+1)
+            else:
+                return ValueError(f'unexpected cadence type {self.cadence}')
+
+        return next_due
