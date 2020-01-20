@@ -15,4 +15,4 @@ class ChoreViewSet(viewsets.ModelViewSet):
 
 
 router = routers.DefaultRouter()
-router.register('chores', ChoreViewSet)
+router.register('chores', ChoreViewSet, 'api-chore-list')
