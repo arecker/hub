@@ -42,16 +42,23 @@ class Chore(models.Model):
         today = timezone.now().date()
         return self.next_due_date < today
 
+    @property
+    def next_due_delta(self):
+        if self.cadence == 0:
+            return timezone.timedelta(days=7)
+        elif self.cadence == 1:
+            return relativedelta(months=+1)
+        else:
+            raise ValueError(f'unexpected cadence type {self.cadence}')
+
     def find_next_due_date(self):
         today = timezone.now().date()
         next_due = copy.copy(self.next_due_date)
 
-        while not (next_due > today):
-            if self.cadence == 0:
-                next_due += timezone.timedelta(days=7)
-            elif self.cadence == 1:
-                next_due += relativedelta(months=+1)
-            else:
-                return ValueError(f'unexpected cadence type {self.cadence}')
+        if next_due > today:  # eager beaver, advance into future
+            return next_due + self.next_due_delta
+        else:  # slacker, keep advancing until caught up
+            while not (next_due > today):
+                next_due += self.next_due_delta
 
-        return next_due
+            return next_due
