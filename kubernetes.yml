@@ -166,7 +166,9 @@ spec:
     spec:
       containers:
         - name: proxy
-          image: arecker/proxy:latest
+          image: arecker/hub-proxy:latest
+          command: ["./entry.sh"]
+          args: ["proxy"]
           imagePullPolicy: IfNotPresent
           env:
             - name: UPSTREAM_DNS

@@ -56,11 +56,6 @@ USE_L10N = True
 
 USE_TZ = False
 
-STATIC_URL = '/static/'
-
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'login'
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 REST_FRAMEWORK = {
@@ -68,3 +63,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [],
     'UNAUTHENTICATED_USER': None,
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'

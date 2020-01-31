@@ -1,6 +1,9 @@
 # flake8: noqa
 
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 from hub import views, api
 
@@ -12,4 +15,4 @@ urlpatterns = [
     path('chores/delete/<uuid:pk>/', views.ChoreDelete.as_view(), name='chore-delete'),
     path('api/', include(api.router.urls)),
     path('', views.Index.as_view(), name='index')
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
