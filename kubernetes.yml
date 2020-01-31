@@ -113,7 +113,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: arecker/hub:latest
+          image: arecker/hub-web:latest
           command: ["./entry.sh"]
           args: ["web"]
           imagePullPolicy: Always
