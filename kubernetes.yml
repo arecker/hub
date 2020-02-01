@@ -169,7 +169,7 @@ spec:
           image: arecker/hub-proxy:latest
           command: ["./entry.sh"]
           args: ["proxy"]
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: UPSTREAM_DNS
               value: hub-web.default.svc.cluster.local
