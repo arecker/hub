@@ -1,7 +1,11 @@
+FROM arecker/hub-web:latest as builder
+RUN python manage.py collectstatic
+
 FROM nginx:stable
 MAINTAINER Alex Recker <alex@reckerfamily.com>
 COPY configs/nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
-ADD static /usr/share/nginx/html/static
+RUN mkdir -p /usr/share/nginx/html/static/
+COPY --from=builder /home/app/static /usr/share/nginx/html/static
 COPY entry.sh /root/entry.sh
 CMD ["/root/entry.sh", "proxy"]
