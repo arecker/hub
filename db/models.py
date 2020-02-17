@@ -6,6 +6,7 @@ import os
 import uuid
 
 from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from sorl.thumbnail import ImageField
@@ -74,6 +75,12 @@ class Wallpaper(models.Model):
     def clean_fields(self, exclude=None):
         self.name = os.path.basename(self.image.path)
         return super(Wallpaper, self).clean_fields(exclude=exclude)
+
+    def validate_unique(self, *args, **kwargs):
+        import ipdb; ipdb.set_trace()
+        if Wallpaper.objects.filter(name=self.name).exists():
+            raise ValidationError(f'{self.name} already exists')
+        return super(Wallpaper, self).validate_unique(*args, **kwargs)
 
     def __str__(self):
         return self.name
