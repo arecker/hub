@@ -111,6 +111,9 @@ spec:
         app: hub
         service: hub-web
     spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
       containers:
         - name: web
           image: arecker/hub-web:latest
@@ -129,6 +132,8 @@ spec:
             - mountPath: /run/secrets/hub-web/
               name: hub-web-secrets
               readOnly: true
+            - mountPath: /media/
+              name: media
       volumes:
         - name: hub-db-secrets
           secret:
@@ -136,6 +141,10 @@ spec:
         - name: hub-web-secrets
           secret:
             secretName: hub-web
+        - name: media
+          nfs:
+            server: archive.local
+            path: /mnt/scratch/farm/hub/media
 ---
 apiVersion: v1
 kind: Service
@@ -164,6 +173,11 @@ spec:
         app: hub
         service: hub-proxy
     spec:
+      volumes:
+        - name: media
+          nfs:
+            server: archive.local
+            path: /mnt/scratch/farm/hub/media      
       containers:
         - name: proxy
           image: arecker/hub-proxy:latest
@@ -176,6 +190,10 @@ spec:
           ports:
             - containerPort: 80
             - containerPort: 443
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html/media/
+              name: media
+              readOnly: true
 ---
 apiVersion: v1
 kind: Service

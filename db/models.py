@@ -2,11 +2,13 @@
 
 import copy
 import datetime
+import os
 import uuid
 
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.utils import timezone
-from dateutil.relativedelta import relativedelta
+from sorl.thumbnail import ImageField
 
 
 class ChoreQuerySet(models.QuerySet):
@@ -62,3 +64,16 @@ class Chore(models.Model):
                 next_due += self.next_due_delta
 
             return next_due
+
+
+class Wallpaper(models.Model):
+    id   = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    name = models.CharField(max_length=80, unique=True)
+    image = ImageField(upload_to='wallpapers')
+
+    def clean_fields(self, exclude=None):
+        self.name = os.path.basename(self.image.path)
+        return super(Wallpaper, self).clean_fields(exclude=exclude)
+
+    def __str__(self):
+        return self.name

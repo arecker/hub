@@ -2,11 +2,11 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     TemplateView, ListView, CreateView,
-    UpdateView, DeleteView, View
+    UpdateView, DeleteView, View, DetailView
 )
 
-from db.models import Chore
-from hub.forms import ChoreForm
+from db.models import Chore, Wallpaper
+from hub.forms import ChoreForm, WallpaperForm
 
 
 class Index(TemplateView):
@@ -87,3 +87,42 @@ class ChoreComplete(View):
         chore.save()
         url = reverse_lazy('chore-list') + f'?{request.GET.urlencode()}'
         return redirect(url)
+
+
+class WallpaperList(ListView):
+    model = Wallpaper
+    template_name = 'wallpapers/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(WallpaperList, self).get_context_data(**kwargs)
+        context['active'] = 'wallpapers'
+        return context
+
+
+class WallpaperCreate(CreateView):
+    model = Wallpaper
+    form_class = WallpaperForm
+    template_name = 'wallpapers/form.html'
+
+    def get_success_url(self, **kwargs):
+        url = reverse_lazy('wallpaper-list')
+        return url
+
+    def get_context_data(self, **kwargs):
+        context = super(WallpaperCreate, self).get_context_data(**kwargs)
+        context['active'] = 'wallpapers'
+        return context
+
+
+class WallpaperDelete(DeleteView):
+    model = Wallpaper
+    template_name = 'wallpapers/delete.html'
+
+    def get_success_url(self, **kwargs):
+        url = reverse_lazy('wallpaper-list')
+        return url
+
+    def get_context_data(self, **kwargs):
+        context = super(WallpaperDelete, self).get_context_data(**kwargs)
+        context['active'] = 'wallpapers'
+        return context

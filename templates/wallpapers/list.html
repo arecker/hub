@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group m-2" role="group">
+	<a href="{% url 'wallpaper-create' %}" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">New</a>
+      </div>
+    </div>
+    {% for wallpaper in wallpaper_list %}
+    {% thumbnail wallpaper.image "100x100" crop="center" as im %}
+    <a href="{% url 'wallpaper-delete' pk=wallpaper.pk %}">
+      <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ wallpaper.name }}" class="img-thumbnail">
+    </a>
+    {% endthumbnail %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

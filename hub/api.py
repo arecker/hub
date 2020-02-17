@@ -14,5 +14,17 @@ class ChoreViewSet(viewsets.ModelViewSet):
     serializer_class = ChoreSerializer
 
 
+class WallpaperSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Wallpaper
+        fields = ['image']
+
+
+class WallpaperViewSet(viewsets.ModelViewSet):
+    queryset = models.Wallpaper.objects.all()
+    serializer_class = WallpaperSerializer
+
+
 router = routers.DefaultRouter()
 router.register('chores', ChoreViewSet, 'api-chore-list')
+router.register('wallpapers', WallpaperViewSet, 'api-wallpaper-list')

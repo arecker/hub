@@ -1,14 +1,14 @@
 version: '3'
 
 services:
-  proxy:
-    image: arecker/hub-proxy:latest
-    build:
-      context: ./
-      dockerfile: dockerfiles/Dockerfile.proxy
-
   web:
     image: arecker/hub-web:latest
     build:
       context: ./
       dockerfile: dockerfiles/Dockerfile.web
+
+  proxy:
+    image: arecker/hub-proxy:latest
+    build:
+      context: ./
+      dockerfile: dockerfiles/Dockerfile.proxy

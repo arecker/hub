@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from db.models import Chore
+from db.models import Chore, Wallpaper
 
 
 class DateInput(forms.DateInput):
@@ -15,3 +15,9 @@ class ChoreForm(ModelForm):
         widgets = {
             'next_due_date': DateInput(),
         }
+
+
+class WallpaperForm(ModelForm):
+    class Meta:
+        model = Wallpaper
+        fields = ['image', ]

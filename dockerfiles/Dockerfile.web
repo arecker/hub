@@ -1,8 +1,12 @@
 FROM python:3
 MAINTAINER Alex Recker <alex@reckerfamily.com>
 
+ARG UID=1001
+ARG GID=1001
+
 # Create an app user
-RUN useradd -ms /bin/bash app
+RUN groupadd -g $GID -o app
+RUN useradd -u $UID -g $GID -ms /bin/bash app
 WORKDIR /home/app
 
 # Install requirements
