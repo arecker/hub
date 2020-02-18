@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from .models import Wallpaper
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('hub')
 
 
 @receiver(post_delete, sender=Wallpaper)
