@@ -68,3 +68,4 @@ REST_FRAMEWORK = {
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+FILE_UPLOAD_PERMISSIONS = 0o644

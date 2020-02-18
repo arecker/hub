@@ -10,7 +10,7 @@ def read_secret(secret_name, file_name):
         return f.read()
 
 
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 SECRET_KEY = read_secret('hub-web', 'hub-web-secret-key.txt')
 ALLOWED_HOSTS = ['hub.local']
 AUTH_PASSWORD_VALIDATORS = []

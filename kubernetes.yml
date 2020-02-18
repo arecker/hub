@@ -123,6 +123,8 @@ spec:
           env:
             - name: DJANGO_SETTINGS_MODULE
               value: hub.settings.prod
+            - name: DEBUG
+              value: 'False'
           ports:
             - containerPort: 8000
           volumeMounts:

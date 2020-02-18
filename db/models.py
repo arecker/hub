@@ -77,7 +77,6 @@ class Wallpaper(models.Model):
         return super(Wallpaper, self).clean_fields(exclude=exclude)
 
     def validate_unique(self, *args, **kwargs):
-        import ipdb; ipdb.set_trace()
         if Wallpaper.objects.filter(name=self.name).exists():
             raise ValidationError(f'{self.name} already exists')
         return super(Wallpaper, self).validate_unique(*args, **kwargs)
