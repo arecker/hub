@@ -91,6 +91,7 @@ class ChoreComplete(View):
 
 class WallpaperList(ListView):
     model = Wallpaper
+    paginate_by = 100
     template_name = 'wallpapers/list.html'
 
     def get_context_data(self, **kwargs):
