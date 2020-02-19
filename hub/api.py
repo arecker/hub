@@ -1,4 +1,5 @@
-from rest_framework import serializers, viewsets, routers
+from rest_framework import serializers, viewsets, routers, decorators
+from rest_framework.response import Response
 
 from db import models
 
@@ -23,6 +24,11 @@ class WallpaperSerializer(serializers.ModelSerializer):
 class WallpaperViewSet(viewsets.ModelViewSet):
     queryset = models.Wallpaper.objects.all()
     serializer_class = WallpaperSerializer
+
+    @decorators.action(detail=False)
+    def random(self, request):
+        choice = self.get_serializer(self.queryset.order_by('?').first())
+        return Response(choice.data)
 
 
 router = routers.DefaultRouter()
