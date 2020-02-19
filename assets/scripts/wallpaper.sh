@@ -17,7 +17,7 @@ set_wallpaper() {
     if is_raspbian; then
 	pcmanfm --set-wallpaper "/tmp/wallpaper"
     else
-	gsettings set org.gnome.desktop.background picture-uri "file://tmp/wallpaper"
+	gsettings set org.gnome.desktop.background picture-uri "file:///tmp/wallpaper"
     fi
 }
 
