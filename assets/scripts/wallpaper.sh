@@ -15,7 +15,7 @@ is_raspbian() {
 
 set_wallpaper() {
     if is_raspbian; then
-	pcmanfm --set-wallpaper "/tmp/wallpaper"
+	DISPLAY=":0" XAUTHORITY="$HOME/.Xauthority" XDG_RUNTIME_DIR=/run/user/$(id -u) pcmanfm --set-wallpaper "/tmp/wallpaper"
     else
 	gsettings set org.gnome.desktop.background picture-uri "file:///tmp/wallpaper"
     fi
