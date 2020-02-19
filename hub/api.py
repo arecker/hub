@@ -17,7 +17,7 @@ class ChoreViewSet(viewsets.ModelViewSet):
 class WallpaperSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Wallpaper
-        fields = ['image']
+        fields = ['name', 'image']
 
 
 class WallpaperViewSet(viewsets.ModelViewSet):
