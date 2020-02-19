@@ -29,8 +29,11 @@
 	{% endif %}
 	{% with ''|center:page_obj.paginator.num_pages as range %}
 	{% for _ in range %}
-	<li class="page-item">
-	  <a class="page-link" href="{% url 'wallpaper-list' %}?page={{ forloop.counter | urlencode }}">{{ forloop.counter }}</a>
+	<li class="page-item {% if page_obj.number == forloop.counter %}active{% endif%}">
+	  <a
+	    class="page-link"
+	    href="{% url 'wallpaper-list' %}?page={{ forloop.counter | urlencode }}">{{ forloop.counter }}
+	  </a>
 	</li>
 	{% endfor %}
 	{% endwith %}
