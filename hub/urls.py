@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 
-from hub import views, api
+from hub import views, api, feeds
 
 urlpatterns = [
     path('chores/', views.ChoreList.as_view(), name='chore-list'),
@@ -17,6 +17,7 @@ urlpatterns = [
     path('wallpapers/', views.WallpaperList.as_view(), name='wallpaper-list'),
     path('wallpapers/create', views.WallpaperCreate.as_view(), name='wallpaper-create'),
     path('wallpapers/<uuid:pk>/', views.WallpaperDelete.as_view(), name='wallpaper-delete'),
+    path('wallpapers/feed/', feeds.WallpaperFeed()),
 
     path('api/', include(api.router.urls)),
     path('', views.Index.as_view(), name='index')
