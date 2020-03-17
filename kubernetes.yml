@@ -49,6 +49,21 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
       initContainers:
+        - name: secretboi
+          image: arecker/secretboi:latest
+          imagePullPolicy: Always
+          env:
+            - name: ONLY_RUN_ONCE
+              value: 'true'
+            - name: SECRET_HUB
+              value: /hub
+            - name: VAULT_ADDR
+              value: http://vault.local
+            - name: VAULT_ROLE
+              value: hub
+          volumeMounts:
+            - name: secrets
+              mountPath: /secrets
         - name: postgres-data-permissions
           image: busybox
           imagePullPolicy: Always
@@ -72,12 +87,18 @@ spec:
             - name: POSTGRES_PASSWORD_FILE
               value: /run/secrets/hub-db/hub-db-password.txt
           volumeMounts:
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
             - mountPath: /var/lib/postgresql/data
               name: hub-db-data
             - mountPath: /run/secrets/hub-db/
               name: hub-db-secrets
               readOnly: true
       volumes:
+        - name: secrets
+          emptyDir:
+            medium: Memory
         - name: hub-db-data
           persistentVolumeClaim:
             claimName: hub-db-pv-claim
@@ -115,6 +136,22 @@ spec:
       securityContext:
         runAsUser: 1001
         runAsGroup: 1001
+      initContainers:
+        - name: secrets
+          image: arecker/secretboi:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: secrets
+              mountPath: /secrets
+          env:
+            - name: ONLY_RUN_ONCE
+              value: 'true'
+            - name: VAULT_ADDR
+              value: 'http://vault.local'
+            - name: VAULT_ROLE
+              value: 'hub'
+            - name: SECRET_HUB
+              value: /hub
       containers:
         - name: web
           image: arecker/hub-web:latest
@@ -129,6 +166,9 @@ spec:
           ports:
             - containerPort: 8000
           volumeMounts:
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
             - mountPath: /run/secrets/hub-db/
               name: hub-db-secrets
               readOnly: true
@@ -138,6 +178,9 @@ spec:
             - mountPath: /media/
               name: media
       volumes:
+        - name: secrets
+          emptyDir:
+            medium: Memory
         - name: hub-db-secrets
           secret:
             secretName: hub-db
