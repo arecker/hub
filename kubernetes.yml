@@ -55,6 +55,8 @@ spec:
           env:
             - name: ONLY_RUN_ONCE
               value: 'true'
+            - name: RECURSE_SECRETS
+              value: 'true'
             - name: SECRET_HUB
               value: /hub
             - name: VAULT_ADDR
