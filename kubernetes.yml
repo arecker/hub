@@ -85,9 +85,9 @@ spec:
             - name: POSTGRES_DB
               value: hub
             - name: POSTGRES_USER_FILE
-              value: /run/secrets/hub-db/hub-db-username.txt
+              value: /secrets/HUB/db_username
             - name: POSTGRES_PASSWORD_FILE
-              value: /run/secrets/hub-db/hub-db-password.txt
+              value: /secrets/HUB/db_password
           volumeMounts:
             - name: secrets
               mountPath: /secrets
