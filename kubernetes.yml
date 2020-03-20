@@ -167,24 +167,12 @@ spec:
             - name: secrets
               mountPath: /secrets
               readOnly: true
-            - mountPath: /run/secrets/hub-db/
-              name: hub-db-secrets
-              readOnly: true
-            - mountPath: /run/secrets/hub-web/
-              name: hub-web-secrets
-              readOnly: true
             - mountPath: /media/
               name: media
       volumes:
         - name: secrets
           emptyDir:
             medium: Memory
-        - name: hub-db-secrets
-          secret:
-            secretName: hub-db
-        - name: hub-web-secrets
-          secret:
-            secretName: hub-web
         - name: media
           nfs:
             server: archive.local
