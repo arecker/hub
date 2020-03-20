@@ -94,9 +94,6 @@ spec:
               readOnly: true
             - mountPath: /var/lib/postgresql/data
               name: hub-db-data
-            - mountPath: /run/secrets/hub-db/
-              name: hub-db-secrets
-              readOnly: true
       volumes:
         - name: secrets
           emptyDir:
@@ -104,9 +101,6 @@ spec:
         - name: hub-db-data
           persistentVolumeClaim:
             claimName: hub-db-pv-claim
-        - name: hub-db-secrets
-          secret:
-            secretName: hub-db
 ---
 apiVersion: v1
 kind: Service
@@ -154,6 +148,8 @@ spec:
               value: 'hub'
             - name: SECRET_HUB
               value: /hub
+            - name: RECURSE_SECRETS
+              value: 'true'
       containers:
         - name: web
           image: arecker/hub-web:latest
