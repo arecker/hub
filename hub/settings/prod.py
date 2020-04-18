@@ -21,7 +21,7 @@ DATABASES = {
         'NAME': 'hub',
         'USER': read_secret('db_username'),
         'PASSWORD': read_secret('db_password'),
-        'HOST': os.env['DB_HOST'],
+        'HOST': os.environ['DB_HOST'],
         'PORT': '5432',
     }
 }
