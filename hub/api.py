@@ -33,4 +33,4 @@ class WallpaperViewSet(viewsets.ModelViewSet):
 
 router = routers.DefaultRouter()
 router.register('chores', ChoreViewSet, 'api-chore-list')
-router.register('wallpapers', WallpaperViewSet, 'api-wallpaper-list')
+# router.register('wallpapers', WallpaperViewSet, 'api-wallpaper-list')
