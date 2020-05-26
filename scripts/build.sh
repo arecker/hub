@@ -11,7 +11,7 @@ docker_build() {
 	   --platform "linux/386,linux/amd64,linux/arm/v6,linux/arm/v7" \
 	   --output "type=image,push=true" \
 	   --tag "arecker/hub-${1}:latest" \
-	   --file Dockerfile "dockerfiles/Dockerfile.${1}"
+	   --file "./dockerfiles/Dockerfile.${1}" .
 }
 
 log "building $IMAGE_NAME"
