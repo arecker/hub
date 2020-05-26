@@ -8,7 +8,7 @@ log() {
 
 docker_build() {
     docker buildx build \
-	   --platform "linux/386,linux/amd64,linux/arm/v6,linux/arm/v7" \
+	   --platform "linux/amd64,linux/arm/v7" \
 	   --output "type=image,push=true" \
 	   --tag "arecker/hub-${1}:latest" \
 	   --file "./dockerfiles/Dockerfile.${1}" .
