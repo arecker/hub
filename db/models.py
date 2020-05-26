@@ -34,7 +34,15 @@ class Chore(models.Model):
     id            = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     name          = models.CharField(max_length=80)
     assignee      = models.IntegerField(choices=assignees)
-    cadence       = models.PositiveSmallIntegerField(choices=[(0, 'Weekly'), (1, 'Monthly')])
+    cadence       = models.PositiveSmallIntegerField(
+        choices=[
+            (0, 'Weekly'),
+            (1, 'Monthly'),
+            (2, 'Every Two Weeks'),
+            (3, 'Every Two Months'),
+            (4, 'Every Three Months'),
+        ]
+    )
     next_due_date = models.DateField()
 
     def __str__(self):
@@ -51,6 +59,12 @@ class Chore(models.Model):
             return timezone.timedelta(days=7)
         elif self.cadence == 1:
             return relativedelta(months=+1)
+        elif self.cadence == 2:
+            return timezone.timedelta(days=14)
+        elif self.cadence == 3:
+            return relativedelta(months=+2)
+        elif self.cadence == 4:
+            return relativedelta(months=+3)
         else:
             raise ValueError(f'unexpected cadence type {self.cadence}')
 
